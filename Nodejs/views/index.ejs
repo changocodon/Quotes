@@ -5,6 +5,21 @@
   <meta charset="UTF-8">
   <title>MY APP</title>
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  <link href='http://fonts.googleapis.com/css?family=Lato:300,400|Crimson+Text' rel='stylesheet' type='text/css'>
+  <!-- Themify Icons -->
+  <link rel="stylesheet" href="css/themify-icons.css">
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="css/bootstrap.css">
+  <!-- Owl Carousel -->
+  <link rel="stylesheet" href="css/owl.carousel.min.css">
+  <link rel="stylesheet" href="css/owl.theme.default.min.css">
+  <!-- Easy Responsive Tabs -->
+  <link rel="stylesheet" href="css/easy-responsive-tabs.css">
+
+
+
+  <!-- Theme Style -->
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <script src="main.js"></script>
 <style>
@@ -24,9 +39,34 @@
 </style>
 
 <body style="text-align: center">
+
+  <section id="fh5co-testimonial">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12 text-center">
+          <h2 class="fh5co-uppercase-heading-sm">Testimony</h2>
+          <div class="owl-carousel-fullwidth fh5co-light-arrow owl-carousel-2">
+            <% for(var i=0; i<quotes.length; i++) {%>
+            <div class="item">
+              <blockquote>
+                <p class="fh5co-serif">&ldquo;<%= quotes[i].quote %>&rdquo;</p>
+                <p class="fh5co-testimonial-author"><cite>&mdash;<%= quotes[i].name %></cite></p>
+              </blockquote>
+            </div>
+            <% } %>
+            <!-- END .item -->
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
   <h1>May Node and Express be with you.</h1><br>
-  <div style=" text-align: center; position: inherit; margin: auto; width: 80%">
-    <table>
+   <div class="container">
+      <div class="row">
+        <div class="col-md-12 text-center">
+<div class="fh5co-serif">
+    <table align="center">
       <tr>
         <th>No.</th>
         <th>Authors</th>
@@ -35,9 +75,9 @@
         <th></th>
       </tr>
       <% for(var i=0; i<quotes.length; i++) {%>
-        <tr>
+        <tr >
           <td>
-            <%=i+1%> 
+            <%=i+1%>
           </td>
           <td><span id="name<%= i %>" style="color: darkgreen"><%= quotes[i].name %></span></td>
           <td><span id="quote<%= i %>" style="color: black"><%= quotes[i].quote %></td>
@@ -47,7 +87,7 @@
         </tr>
       <% } %>
     </table>
-  </div>
+</div>
 
   <form action="/" method="POST" style="margin-top: 1%">
       <input type="text" placeholder="Author" name="name" id="author" style="width: 30%" required>
@@ -57,6 +97,24 @@
       <label id="quoteId" style="visibility: hidden" ></label>
   </form>
 
+        </div>
+      </div>
+    </div>
+
+
+
+		<!-- Owl carousel -->
+		<script src="js/owl.carousel.min.js"></script>
+		<!-- Magnific Popup -->
+		<script src="js/jquery.magnific-popup.min.js"></script>
+	<!-- Superfish -->
+		<script src="js/superfish.js"></script>
+		<!-- Easy Responsive Tabs -->
+		<script src="js/easyResponsiveTabs.js"></script>
+		<!-- FastClick for Mobile/Tablets -->
+		<script src="js/fastclick.js"></script>
+		<!-- Main JS -->
+		<script src="js/main.js"></script>
 </body>
 
 </html>

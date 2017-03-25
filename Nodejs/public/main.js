@@ -11,22 +11,42 @@ function editSQuote(i) {
 }
 
 function deleteSQuote(i) {
-    var author = document.getElementById("name" + i);
-    var quote = document.getElementById("quote" + i);
-    alert(author.textContent + ': ' + quote.textContent);
+    var quoteId = document.getElementById("quoteId"+ i);
+
+    fetch('/', {
+        method: 'delete',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            '_id': quoteId.textContent
+        })
+    }).then(res => {
+        if (res.ok) return res.body
+
+    }).then(data => {
+            console.log(data)
+            window.location.reload(true)
+        })
 }
 
 function updateSQuote() {
     var author = document.getElementById("author").value;
     var quoteOfAuthor = document.getElementById("quoteOfAuthor").value;
     var quoteId = document.getElementById("quoteId").innerHTML;
-     fetch('/up', {
+    fetch('/', {
         method: 'put',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-            'name':  author,
+            'name': author,
             'quote': quoteOfAuthor,
             '_id': quoteId
         })
-    })
+    }).then(res => {
+        if (res.ok) return res.json()
+
+    }).then(data => {
+            console.log(data)
+            window.location.reload(true)
+        })
 }
+
+
