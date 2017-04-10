@@ -1,67 +1,99 @@
 /*
  * Created on: 2017/04/10
- * Author: sangtlai.pq
+ * Author: sangtlai
  *
- * Copyright (C) 2008-2015 Hitachi.
- * CONFIDENTIAL Proprietary to Hitachi.
+ * Copyright (C) 2016-2017 SangLaiTan.
  */
 
-package jp.co.atst.on.clm13.event;
-
 import java.util.Arrays;
+import java.util.Scanner;
 
 /**
  * <p>Class name : RotateSquare.</p>
  * <p>Outline    : Description.</p>
  *
- * @author GCS sangtlai.pq
+ * @author sangtlai
  * <pre>
  * Change history
  * ----------------------------------------------------
  * Changed date  Author        Changed content
- * 2017/04/10    GCS sangtlai.pq   New creation
+ * 2017/04/10    sangtlai.pq   New creation
  * </pre>
  */
 
 public class RotateSquare {
-
+	/**
+	 * n is Size of the square 
+	 */
+	private int sizeOfS;
+	
+	/**
+	 * squareSize is Size of the square 
+	 */
+	private static int squareSize;
+	/**
+	 * squareSize is Size of the square 
+	 */
+	private static int commands;
     /**
-     * Method description
+     * The entry point execute.
      *
      * @param args
      * @author sangtlai.pq
      */
     public static void main(String[] args) {
-        int[][] square = new int[3][3];
-        int[][] rotatedSquare = new int[3][3];
+    	Scanner importData = new Scanner(System.in);
+    	System.out.print("Please import size of square: ");
+    	squareSize =importData.nextInt();
+    	System.out.print("Please import number of commands: ");
+    	commands = importData.nextInt();
+        Integer[][] square = new Integer[squareSize][squareSize];
+        Integer[][] rotatedSquare = new Integer[squareSize][squareSize];
         RotateSquare rotateSquare = new RotateSquare();
         rotateSquare.prepareSquare(square);
-        rotateSquare.rotate90Degree(square, rotatedSquare);
+        rotateSquare.rotate90Degrees(square, rotatedSquare);
+        
+        importData.close();
     }
+    
 
-    public void prepareSquare(int[][] square) {
-        int dem = 0;
+    /**
+     * This method prepare data for 2D square array
+     * @param square is 2d array
+     */
+    public void prepareSquare(Integer[][] square) {
+        int count = 1;
         for (int i = 0; i < square.length; i++) {
             for (int j = 0; j < square.length; j++) {
-                square[j][i] = dem;
-                dem++;
+                square[i][j] = count;
+                count++;
             }
         }
         printResult(square);
     }
 
-    public void rotate90Degree(int[][] square, int[][] rotatedSquare) {
-        for (int j = 0; j < square.length; j++) {
-            for (int i = 0; i < square.length; i++) {
-                rotatedSquare[i][j] = square[j][square.length - i - 1];
+    /**
+     * This method perform rotate 90 degrees the sub-square
+     * @param square is 2D array original
+     * @param rotatedSquare is 2D array after rotate 90 degrees
+     */
+    public void rotate90Degrees(Integer[][] square, Integer[][] rotatedSquare) {
+        for (int i = 0; i < rotatedSquare.length; i++) {
+            for (int j = 0; j < rotatedSquare.length; j++) {
+                rotatedSquare[i][j] = square[square.length - j - 1][i];
+                System.out.println(square[square.length - j - 1][i]);
             }
         }
         System.out.println("The square Rotated");
         printResult(rotatedSquare);
     }
 
-    public static void printResult(int[][] arrayDimen) {
-        for (int[] arr : arrayDimen) {
+    /**
+     * This method print 2D-array at console
+     * @param array2D
+     */
+    public static void printResult(Integer[][] array2D) {
+        for (Integer[] arr : array2D) {
             System.out.println(Arrays.toString(arr));
         }
     }
