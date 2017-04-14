@@ -1,10 +1,10 @@
-package jp.co.atst.on.clm13.event;
-
 /*
- * Created on: 2017/04/10
+ * Created on: 2017/04/13
  * Author: sangtlai
  * Copyright (C) 2016-2017 SangLaiTan.
  */
+
+package com.vn.entrypoint;
 
 import java.util.Arrays;
 import java.util.Scanner;
@@ -23,16 +23,17 @@ import java.util.Scanner;
  * Change history
  * ----------------------------------------------------
  * Changed date  Author        Changed content
- * 2017/04/10    sangtlai.pq   New creation
+ * 2017/04/13    sangtlai.pq   New creation
  *         </pre>
  */
 
-public class RotateSquare {
+public class RotateMatrix {
 
     /**
      * Array store values of row of sub-square
      */
     private static int[] row;
+
     /**
      * Array store values of column of sub-square
      */
@@ -57,40 +58,37 @@ public class RotateSquare {
      * squareSize is size of the square
      */
     private static int squareSize;
-    /**
-     * numberOfCommands is number of commands
-     */
-    private static int numberOfCommands;
-    /**
-     * numberOfQueries is number of queries
-     */
-    private static int numberOfQueries;
 
     /**
      * The entry point execute application.
      * 
      * @param args
-     * @author sangtlai.pq
+     * @author sangtlai
      */
     public static void main(String[] args) {
-        putData = new Scanner(System.in);
 
-        putSizeOfSquare();
+        putData = new Scanner(System.in);
+        /* user fill size of square */
+        putOneElement("size of square", 10, 7, squareSize);
+        /* user fill number of commands and coordinates */
         putNumberOfCommands();
+        /* user fill number of queries and values need to find */
         putNumberOfQueries();
 
         int[][] squareTemp = new int[squareSize][squareSize];
         int[][] rotatedSquare = new int[squareSize][squareSize];
-
+        /*Fill data from 0 to square's size to the power 2 into matrix squareTemp*/
         prepareSquare(squareTemp);
 
-        // clone square's data to rotateSquare
+        /*Clone square's data to rotateSquare*/
         rotatedSquare = cloneArray(squareTemp);
 
+        /* rotate sub-square 90 degree clockwise base on number of coordinates */
         for (int i = 0; i < row.length; i++) {
             rotate90Degrees(squareTemp, rotatedSquare, row[i], column[i], diagonal[i]);
             squareTemp = cloneArray(rotatedSquare);
         }
+        /* search the values and print value's position in console */
         for (int i = 0; i < valuesToFind.length; i++) {
             System.out.println(getIndexOf(rotatedSquare, valuesToFind[i]));
         }
@@ -98,43 +96,38 @@ public class RotateSquare {
     }
 
     /**
-     * this method require insert data of size of square
+     * This method require user fill data
+     *
+     * @param elementName name of data filled by user
+     * @param base
+     * @param exponent
+     * @param dataInput is data filled by user
+     * @author sangtlai.pq
      */
-    public static void putSizeOfSquare() {
-
-        while (true) {
-            /*
-             * if user fill data isn't correct, inform user must fill data again
-             */
-            try {
-                System.out.println("Please fill size of square: ");
-                squareSize = Integer.parseInt(putData.nextLine());
-                checkDataLimit(squareSize,10,7);
-                break;
-            } catch (NumberFormatException | DataInvalidException e) {
-                System.out.println("You fill size of square not correct!");
-            }
-        }
-    }
-
-    
-    public static void putNumberOfCommands() {
+    public static int putOneElement(String elementName, int base, int exponent, int dataInput) {
         while (true) {
             /*
              * If user fill data isn't correct, inform user must fill data again
              */
             try {
-                /* Store data number of commands */
-                System.out.println("Please number of commands: ");
-                numberOfCommands = Integer.parseInt(putData.nextLine());
-                
-                checkDataLimit(numberOfCommands,10,5);
-                
-                break;
+                System.out.println("Please fill " + elementName + " :");
+                dataInput = Integer.parseInt(putData.nextLine());
+                checkDataLimit(dataInput, base, exponent);
+                return dataInput;
             } catch (NumberFormatException | DataInvalidException e) {
-                System.out.println("You fill number of commands not correct!");
+                System.out.println(
+                        "You fill " + elementName + " not correct(it must Integer, < " + base + "^" + exponent + ")!");
             }
         }
+    }
+
+    /**
+     * This method require insert data munber of commands and cordinates of sub-square
+     * @author sangtlai
+     */
+    public static void putNumberOfCommands() {
+        int numberOfCommands = 0;
+        numberOfCommands = putOneElement("number of commands", 10, 5, numberOfCommands);
 
         /* Declare 3 array to store coordinates of sub-square */
         row = new int[numberOfCommands];
@@ -163,8 +156,12 @@ public class RotateSquare {
 
                 countNumberOfCommands++;
 
-            } catch (NumberFormatException | DataInvalidException e) {
-                System.out.println("You fill coordinates not correct please fill follow format (row,column,diagonal): ");
+            } catch (NumberFormatException e) {
+                System.out.println(
+                        "You fill coordinates not correct (it must be Integer) please fill follow format (row,column,diagonal): ");
+            } catch (DataInvalidException e) {
+                System.out.println(
+                        "You fill coordinates not correct with contraints please fill follow format (row,column,diagonal): ");
             }
 
         }
@@ -172,23 +169,11 @@ public class RotateSquare {
 
     /**
      * This method require user insert number of values need to find position
+     * @author sangtlai
      */
     public static void putNumberOfQueries() {
-        while (true) {
-            /*
-             * If user fill data isn't correct, inform user must fill data again
-             */
-            try {
-                /* Store data number of queries */
-                System.out.println("Please fill number of queries: ");
-                numberOfQueries = Integer.parseInt(putData.nextLine());
-                checkDataLimit(numberOfQueries, 10, 5);
-                break;
-            } catch (NumberFormatException | DataInvalidException e) {
-                System.out.println("You fill number of queries not correct!");
-            }
-        }
-
+        int numberOfQueries = 0;
+        numberOfQueries = putOneElement("number of queries", 10, 5, numberOfQueries);
         /* Declare a array to store the values need to find */
         valuesToFind = new int[numberOfQueries];
         int countNumberOfValues = 0;
@@ -206,28 +191,34 @@ public class RotateSquare {
                 countNumberOfValues++;
 
             } catch (NumberFormatException | DataInvalidException e) {
-                System.out.println("You fill values need to find not correct please fill again!");
+                System.out.println("You fill values need to find not correct(it must be Integer, <" + "squareSize"
+                        + "^2) please fill again!");
             }
 
         }
     }
+
     /**
      * This method check the value must greater than 0 and less than a exponential number
+     *
+     * @param valueNeedToCheck 
+     * @param base
+     * @param exponent
      * @throws DataInvalidException when square's size greater than 10^7
+     * @author sangtlai
      */
-    public static void checkDataLimit(int valueNeedToCheck, int base ,int exponent) throws DataInvalidException{
+    public static void checkDataLimit(int valueNeedToCheck, int base, int exponent) throws DataInvalidException {
 
-        if(valueNeedToCheck < 0 || valueNeedToCheck > Math.pow(base, exponent)){
+        if (valueNeedToCheck < 0 || valueNeedToCheck > Math.pow(base, exponent)) {
             throw new DataInvalidException();
         }
     }
-    
-
 
     /**
      * This method check constraints of sub-square
      * @param subSquareCurrent position of sub-square currently
      * @throws DataInvalidException Exception occur when coordinates of sub-square incorrect with constraints
+     * @author sangtlai
      */
     public static void checkConstraints(int subSquareCurrent) throws DataInvalidException {
         /*
@@ -256,8 +247,7 @@ public class RotateSquare {
     }
 
     /**
-     * Clone the provided array
-     * 
+     * Clone the provided array.
      * @param src is array to specify matrix square
      * @return target is a new clone of the provided array
      */
@@ -274,8 +264,8 @@ public class RotateSquare {
 
     /**
      * This method prepare data for 2D square array
-     * 
      * @param square is 2d array
+     * @author sangtlai
      */
     public static void prepareSquare(int[][] square) {
         /* Store incremental value to each element of array */
@@ -286,18 +276,27 @@ public class RotateSquare {
                 count++;
             }
         }
-                /*printResult(square);*/
+        /* printResult(square); */
     }
 
     /**
-     * This method perform rotate 90 degrees the sub-square
-     * 
+     * This method perform rotate 90 degree the sub-square
      * @param square is 2D array original
      * @param rotatedSquare is 2D array after rotate 90 degrees
+     * @param a is the row
+     * @param b is the column
+     * @param c is the diagonal 
+     * @author sangtlai
      */
     public static void rotate90Degrees(int[][] square, int[][] rotatedSquare, int a, int b, int d) {
+        /*
+         * Replace value of rotatedSquare matrix base on square matrix
+         * Because the sub-square rotate 90 degree clockwise,
+         * we have first row of sub-square of rotatedSquare matrix is corresponding with first
+         * column of sub-square square matrix
+         */
         int minColumn = b - 2;
-        
+
         for (int i = a - 1; i < a + d; i++) {
             int maxRow = a + d;
             minColumn++;
@@ -307,33 +306,37 @@ public class RotateSquare {
             }
         }
 
-        /*      System.out.println("The square Rotated");
-                printResult(rotatedSquare);*/
+        /*
+         * System.out.println("The square Rotated");
+         * printResult(rotatedSquare);
+         */
     }
 
     /**
      * This method print 2D-array at console
-     * 
      * @param array2D
+     * @author sangtlai
      */
     public static void printResult(int[][] array2D) {
-        
+
         /* Print 2D array to console */
         for (int[] arr : array2D) {
             System.out.println(Arrays.toString(arr));
         }
-        
+
     }
 
     /**
+     * This method search the value and return position of value
      * @param src is the array contain data after rotate
      * @param value is the value need to find position
      * @return position of the value need to find. if src don't contain value
      *         need to file this method will inform the value not found.
+     * @author sangtlai
      */
     public static String getIndexOf(int[][] src, int value) {
         String valueNotFound = "Value not found";
-        
+
         /* Loop array and check the value of each element */
         for (int i = 0; i < src.length; i++) {
             for (int j = 0; j < src.length; j++) {
@@ -347,14 +350,14 @@ public class RotateSquare {
 
     /**
      * This class is custom exception
-     * @author sanglt
+     * @author sangtlai
      *
      */
     public static class DataInvalidException extends Exception {
 
         private static final long serialVersionUID = 1L;
 
-        /*When user fill data of sub-square incorrect with constraints exception will occur*/
+        /* When user fill data of sub-square incorrect with constraints exception will occur */
         public DataInvalidException() {
             super();
         }
